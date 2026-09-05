@@ -1,98 +1,130 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import "./SalesDashboard.css";
 
 const modules = [
   {
     title: "Quotations",
-    description:
-      "Create, inspect and evaluate customer quotations.",
+    description: "Build, review and evaluate customer quotes.",
     path: "/sales/quotations",
-    icon: "📄",
+    icon: "▣",
+    metric: "Quote pipeline",
+    tone: "violet",
   },
   {
     title: "Approvals",
-    description:
-      "Review quotations requiring approval.",
+    description: "Move high-risk deals through the right approval chain.",
     path: "/sales/approvals",
-    icon: "✅",
+    icon: "✓",
+    metric: "Governance",
+    tone: "green",
   },
   {
     title: "Fulfillment",
-    description:
-      "Manage warehouse allocation and fulfillment.",
+    description: "Allocate inventory and move approved orders to shipment.",
     path: "/sales/fulfillment",
-    icon: "🚚",
+    icon: "↗",
+    metric: "Operations",
+    tone: "orange",
   },
   {
     title: "Deal Health",
-    description:
-      "Monitor risk and identify unhealthy deals.",
+    description: "Spot risk, stalled deals and revenue blockers early.",
     path: "/sales/deal-health",
-    icon: "📊",
+    icon: "⌁",
+    metric: "Intelligence",
+    tone: "blue",
   },
 ];
 
 export default function SalesDashboard() {
   const { user, logout } = useAuth();
+  const role = user?.role === "SALES_MANAGER" ? "Sales Manager" : user?.role === "FINANCE" ? "Finance" : "Sales";
 
   return (
-    <div className="app-shell">
-
-      <header className="topbar">
-        <div>
-          <strong>DealFlow360</strong>
-          <span className="topbar-subtitle">
-            Sales Workspace
-          </span>
-        </div>
-
-        <div className="topbar-user">
+    <div className="sales-page">
+      <header className="sales-topbar">
+        <Link to="/sales" className="sales-brand">
+          <span className="sales-brand-mark">D</span>
           <span>
-            {user?.name} · Sales
+            <strong>DealFlow360</strong>
+            <small>Intelligent Sales Operations</small>
           </span>
+        </Link>
 
-          <button
-            className="secondary-button"
-            onClick={logout}
-          >
-            Logout
-          </button>
+        <div className="sales-user">
+          <div className="sales-user-copy">
+            <strong>{user?.name || "Workspace user"}</strong>
+            <span>{role}</span>
+          </div>
+          <button className="sales-logout" onClick={logout}>Log out</button>
         </div>
       </header>
 
-      <main className="dashboard-container">
-
-        <div className="page-heading">
+      <main className="sales-content">
+        <section className="sales-hero">
           <div>
-            <h1>Sales Dashboard</h1>
-            <p>
-              Manage the quotation-to-cash workflow.
-            </p>
+            <span className="eyebrow">SALES WORKSPACE</span>
+            <h1>Move every deal<br /><span>forward with confidence.</span></h1>
+            <p>One workspace for quotations, risk controls, approvals and fulfillment — from first quote to revenue.</p>
           </div>
+          <div className="sales-hero-badge">
+            <span className="pulse-dot" />
+            <div>
+              <strong>Workflow online</strong>
+              <small>Policy &amp; approval engine active</small>
+            </div>
+          </div>
+        </section>
+
+        <section className="sales-stat-grid">
+          <div className="sales-stat"><span>01</span><strong>Quote</strong><small>Create &amp; price</small></div>
+          <div className="sales-stat"><span>02</span><strong>Risk</strong><small>Evaluate policy</small></div>
+          <div className="sales-stat"><span>03</span><strong>Approval</strong><small>Govern exceptions</small></div>
+          <div className="sales-stat"><span>04</span><strong>Revenue</strong><small>Fulfill &amp; collect</small></div>
+        </section>
+
+        <div className="sales-section-heading">
+          <div>
+            <span className="eyebrow">WORKFLOW MODULES</span>
+            <h2>Your command center</h2>
+          </div>
+          <span className="sales-live-label">● Live workspace</span>
         </div>
 
-        <div className="module-grid">
-          {modules.map((module) => (
-            <Link
-              key={module.path}
-              to={module.path}
-              className="module-card"
-            >
-              <div className="module-icon">
-                {module.icon}
+        <section className="sales-module-grid">
+          {modules.map((module, index) => (
+            <Link key={module.path} to={module.path} className={`sales-module ${module.tone}`}>
+              <div className="sales-module-top">
+                <span className="sales-module-icon">{module.icon}</span>
+                <span className="sales-module-number">0{index + 1}</span>
               </div>
-
-              <h2>{module.title}</h2>
-
-              <p>{module.description}</p>
-
-              <span className="module-link">
-                Open →
-              </span>
+              <div>
+                <span className="sales-module-label">{module.metric}</span>
+                <h3>{module.title}</h3>
+                <p>{module.description}</p>
+              </div>
+              <span className="sales-module-link">Open workspace <b>→</b></span>
             </Link>
           ))}
-        </div>
+        </section>
 
+        <section className="sales-flow-card">
+          <div>
+            <span className="eyebrow">DEALFLOW</span>
+            <h2>From quote to cash</h2>
+            <p>Every decision is connected, traceable and ready for the next action.</p>
+          </div>
+          <div className="sales-flow-steps">
+            {['Quotation', 'Risk check', 'Approval', 'Fulfillment'].map((step, index) => (
+              <div className="sales-flow-step" key={step}>
+                <span>{index + 1}</span>
+                <strong>{step}</strong>
+                {index < 3 && <i>→</i>}
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   );
