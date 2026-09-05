@@ -8,6 +8,7 @@ import AdminPolicies from "./pages/AdminPolicies";
 import AdminProducts from "./pages/AdminProducts";
 import AdminUsers from "./pages/AdminUsers";
 import Approvals from "./pages/Approvals";
+import Billing from "./pages/Billing";
 import DealHealth from "./pages/DealHealth";
 import Fulfillment from "./pages/Fulfillment";
 import QuotationDetail from "./pages/QuotationDetail";
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/sales/approvals" element={<Approvals />} />
         <Route path="/sales/fulfillment" element={<Fulfillment />} />
         <Route path="/sales/fulfillment/:quotationId" element={<Fulfillment />} />
+        <Route path="/sales/billing" element={<Billing />} />
         <Route path="/sales/deal-health" element={<DealHealth />} />
       </Route>
 
