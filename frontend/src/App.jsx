@@ -16,6 +16,7 @@ import Quotations from "./pages/Quotations";
 import SalesDashboard from "./pages/SalesDashboard";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import CustomerQuotations from "./pages/CustomerQuotations";
+import CustomerQuotationDetail from "./pages/CustomerQuotationDetail";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 const SALES_WORKSPACE_ROLES = ["SALES", "SALES_MANAGER", "FINANCE"];
@@ -25,7 +26,6 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-
       <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/users" element={<AdminUsers />} />
@@ -33,7 +33,6 @@ export default function App() {
         <Route path="/admin/products" element={<AdminProducts />} />
         <Route path="/admin/policies" element={<AdminPolicies />} />
       </Route>
-
       <Route element={<ProtectedRoute allowedRoles={SALES_WORKSPACE_ROLES} />}>
         <Route path="/sales" element={<SalesDashboard />} />
         <Route path="/sales/quotations" element={<Quotations />} />
@@ -44,12 +43,11 @@ export default function App() {
         <Route path="/sales/billing" element={<Billing />} />
         <Route path="/sales/deal-health" element={<DealHealth />} />
       </Route>
-
       <Route element={<ProtectedRoute allowedRoles={["CUSTOMER"]} />}>
         <Route path="/customer" element={<CustomerDashboard />} />
         <Route path="/customer/quotations" element={<CustomerQuotations />} />
+        <Route path="/customer/quotations/:quotationId" element={<CustomerQuotationDetail />} />
       </Route>
-
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
