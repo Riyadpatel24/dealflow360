@@ -59,20 +59,13 @@ sales_access = require_role(
 @router.get("/")
 def list_quotations(
     db: Session = Depends(get_db),
-    current_user: User = Depends(
-        sales_access
-    ),
+    current_user: User = Depends(sales_access),
 ):
-
     quotations = (
         db.query(Quotation)
-        .order_by(
-            Quotation.id.desc()
-        )
+        .order_by(Quotation.id.desc())
         .all()
     )
-
-
     return quotations
 
 
@@ -83,24 +76,15 @@ def list_quotations(
 def create_quotation(
     quotation_data: QuotationCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(
-        sales_access
-    ),
+    current_user: User = Depends(sales_access),
 ):
-
-    customer = db.get(
-        Customer,
-        quotation_data.customer_id,
-    )
-
+    customer = db.get(Customer, quotation_data.customer_id)
 
     if customer is None:
-
         raise HTTPException(
             status_code=404,
             detail="Customer not found",
         )
-
 
     existing = (
         db.query(Quotation)
@@ -111,50 +95,33 @@ def create_quotation(
         .first()
     )
 
-
     if existing:
-
         raise HTTPException(
             status_code=409,
             detail="Quotation number already exists",
         )
 
-
     quotation = Quotation(
-        quotation_number=
-            quotation_data.quotation_number,
-
-        customer_id=
-            quotation_data.customer_id,
-
-        currency=
-            quotation_data.currency,
+        quotation_number=quotation_data.quotation_number,
+        customer_id=quotation_data.customer_id,
+        currency=quotation_data.currency,
     )
-
 
     db.add(quotation)
     db.commit()
     db.refresh(quotation)
 
-
     return quotation
 
 
-@router.get(
-    "/customer/my-quotes"
-)
+@router.get("/customer/my-quotes")
 def customer_quotations(
     db: Session = Depends(get_db),
-    current_user: User = Depends(
-        require_role("CUSTOMER")
-    ),
+    current_user: User = Depends(require_role("CUSTOMER")),
 ):
-
     customer_user = (
         db.query(CustomerUser)
-        .filter(
-            CustomerUser.user_id == current_user.id
-        )
+        .filter(CustomerUser.user_id == current_user.id)
         .one_or_none()
     )
 
@@ -166,13 +133,8 @@ def customer_quotations(
 
     return (
         db.query(Quotation)
-        .filter(
-            Quotation.customer_id
-            == customer_user.customer_id
-        )
-        .order_by(
-            Quotation.id.desc()
-        )
+        .filter(Quotation.customer_id == customer_user.customer_id)
+        .order_by(Quotation.id.desc())
         .all()
     )
 
@@ -181,52 +143,43 @@ def customer_quotations(
 def get_quotation(
     quotation_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(
-        sales_access
-    ),
+    current_user: User = Depends(sales_access),
 ):
-
-    quotation = db.get(
-        Quotation,
-        quotation_id,
-    )
-
+    quotation = db.get(Quotation, quotation_id)
 
     if quotation is None:
-
         raise HTTPException(
             status_code=404,
             detail="Quotation not found",
         )
 
-
     lines = (
         db.query(QuotationLine)
-        .filter(
-            QuotationLine.quotation_id
-            == quotation_id
-        )
+        .filter(QuotationLine.quotation_id == quotation_id)
         .all()
     )
 
-
     risk = (
         db.query(RiskEvaluation)
-        .filter(
-            RiskEvaluation.quotation_id
-            == quotation_id
-        )
-        .order_by(
-            RiskEvaluation.id.desc()
-        )
+        .filter(RiskEvaluation.quotation_id == quotation_id)
+        .order_by(RiskEvaluation.id.desc())
         .first()
     )
 
+    risk_lines = []
+    if risk:
+        risk_lines = (
+            db.query(RiskLine)
+            .filter(RiskLine.risk_evaluation_id == risk.id)
+            .order_by(RiskLine.quotation_line_id)
+            .all()
+        )
 
     return {
         "quotation": quotation,
         "lines": lines,
         "risk": risk,
+        "risk_lines": risk_lines,
     }
 
 
@@ -238,149 +191,132 @@ def create_quotation_line(
     quotation_id: int,
     line_data: QuotationLineCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(
-        sales_access
-    ),
+    current_user: User = Depends(sales_access),
 ):
-
-    quotation = db.get(
-        Quotation,
-        quotation_id,
-    )
-
+    quotation = db.get(Quotation, quotation_id)
 
     if quotation is None:
-
         raise HTTPException(
             status_code=404,
             detail="Quotation not found",
         )
 
+    if quotation.status not in {
+        "DRAFT",
+        "SUBMITTED",
+        "RETURNED_FOR_REVISION",
+    }:
+        raise HTTPException(
+            status_code=400,
+            detail="Quotation lines can only be changed while the quotation is editable",
+        )
 
-    product = db.get(
-        Product,
-        line_data.product_id,
-    )
-
+    product = db.get(Product, line_data.product_id)
 
     if product is None:
-
         raise HTTPException(
             status_code=404,
             detail="Product not found",
         )
-
 
     quotation_line = QuotationLine(
         quotation_id=quotation_id,
         product_id=line_data.product_id,
         quantity=line_data.quantity,
         unit_price=line_data.unit_price,
-        discount_percent=
-            line_data.discount_percent,
+        discount_percent=line_data.discount_percent,
     )
-
 
     db.add(quotation_line)
     db.commit()
     db.refresh(quotation_line)
 
-
     return quotation_line
 
 
-@router.post(
-    "/{quotation_id}/evaluate-risk"
-)
+@router.post("/{quotation_id}/evaluate-risk")
 def evaluate_risk(
     quotation_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(
-        sales_access
-    ),
+    current_user: User = Depends(sales_access),
 ):
+    quotation = db.get(Quotation, quotation_id)
+
+    if quotation is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Quotation not found",
+        )
+
+    if quotation.status in {"APPROVED", "REJECTED"}:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Quotation is already {quotation.status.lower()} and cannot be re-evaluated",
+        )
 
     try:
-
         risk = evaluate_quotation_risk(
             db=db,
             quotation_id=quotation_id,
         )
-
     except ValueError as error:
-
         raise HTTPException(
             status_code=400,
             detail=str(error),
         )
 
-
     approval = None
 
-
     if risk.risk_level != "LOW":
-
         approval = create_approval_request(
             db=db,
             quotation_id=quotation_id,
         )
         db.commit()
     else:
-        quotation = db.get(Quotation, quotation_id)
         quotation.status = "APPROVED"
         db.commit()
 
+    risk_lines = (
+        db.query(RiskLine)
+        .filter(RiskLine.risk_evaluation_id == risk.id)
+        .order_by(RiskLine.quotation_line_id)
+        .all()
+    )
 
     return {
         "risk": risk,
+        "risk_lines": risk_lines,
         "approval_request": approval,
+        "quotation_status": quotation.status,
     }
 
 
-@router.get(
-    "/{quotation_id}/approval"
-)
+@router.get("/{quotation_id}/approval")
 def get_approval(
     quotation_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(
-        sales_access
-    ),
+    current_user: User = Depends(sales_access),
 ):
-
     request = (
         db.query(ApprovalRequest)
-        .filter(
-            ApprovalRequest.quotation_id
-            == quotation_id
-        )
-        .order_by(
-            ApprovalRequest.id.desc()
-        )
+        .filter(ApprovalRequest.quotation_id == quotation_id)
+        .order_by(ApprovalRequest.id.desc())
         .first()
     )
 
-
     if request is None:
-
         return {
             "approval_request": None,
             "steps": [],
         }
 
-
     steps = (
         db.query(ApprovalStep)
-        .filter(
-            ApprovalStep.approval_request_id
-            == request.id
-        )
-        .order_by(
-            ApprovalStep.sequence
-        )
+        .filter(ApprovalStep.approval_request_id == request.id)
+        .order_by(ApprovalStep.sequence)
         .all()
     )
-
 
     return {
         "approval_request": request,
