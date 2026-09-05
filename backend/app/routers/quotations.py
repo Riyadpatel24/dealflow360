@@ -39,6 +39,7 @@ from app.services.risk_engine import (
 
 from app.services.approval_engine import (
     create_approval_request,
+    act_on_approval,
 )
 
 
@@ -322,3 +323,27 @@ def get_approval(
         "approval_request": request,
         "steps": steps,
     }
+
+
+@router.post("/{quotation_id}/approval/{step_id}/action")
+def approval_action(
+    quotation_id: int,
+    step_id: int,
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role("ADMIN", "SALES_MANAGER", "FINANCE")),
+):
+    action = str(payload.get("action", "")).upper()
+    reason = payload.get("reason")
+
+    try:
+        return act_on_approval(
+            db=db,
+            quotation_id=quotation_id,
+            step_id=step_id,
+            user=current_user,
+            action=action,
+            reason=reason,
+        )
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
