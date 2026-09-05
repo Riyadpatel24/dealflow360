@@ -28,3 +28,4 @@ from app.models.operations import (
     NegotiationRequest,
     AuditEvent,
 )
+from app.models.notification import Notification
