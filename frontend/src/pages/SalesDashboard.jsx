@@ -2,14 +2,15 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import "./SalesDashboard.css";
 
-const modules = [
+const baseModules = [
   {
     title: "Quotations",
     description: "Build, review and evaluate customer quotes.",
     path: "/sales/quotations",
     icon: "▣",
     metric: "Quote pipeline",
-    tone: "violet",
+    tone: "blue",
+    roles: ["SALES", "SALES_MANAGER"],
   },
   {
     title: "Approvals",
@@ -18,6 +19,7 @@ const modules = [
     icon: "✓",
     metric: "Governance",
     tone: "green",
+    roles: ["SALES_MANAGER", "FINANCE"],
   },
   {
     title: "Fulfillment",
@@ -25,7 +27,8 @@ const modules = [
     path: "/sales/fulfillment",
     icon: "↗",
     metric: "Operations",
-    tone: "orange",
+    tone: "teal",
+    roles: ["SALES", "SALES_MANAGER"],
   },
   {
     title: "Deal Health",
@@ -34,12 +37,16 @@ const modules = [
     icon: "⌁",
     metric: "Intelligence",
     tone: "blue",
+    roles: ["SALES", "SALES_MANAGER", "FINANCE"],
   },
 ];
 
 export default function SalesDashboard() {
   const { user, logout } = useAuth();
-  const role = user?.role === "SALES_MANAGER" ? "Sales Manager" : user?.role === "FINANCE" ? "Finance" : "Sales";
+  const role = user?.role || "SALES";
+  const roleLabel = role === "SALES_MANAGER" ? "Sales Manager" : role === "FINANCE" ? "Finance Operations" : "Sales";
+  const isFinance = role === "FINANCE";
+  const modules = baseModules.filter((module) => module.roles.includes(role));
 
   return (
     <div className="sales-page">
@@ -55,7 +62,7 @@ export default function SalesDashboard() {
         <div className="sales-user">
           <div className="sales-user-copy">
             <strong>{user?.name || "Workspace user"}</strong>
-            <span>{role}</span>
+            <span>{roleLabel}</span>
           </div>
           <button className="sales-logout" onClick={logout}>Log out</button>
         </div>
@@ -64,9 +71,9 @@ export default function SalesDashboard() {
       <main className="sales-content">
         <section className="sales-hero">
           <div>
-            <span className="eyebrow">SALES WORKSPACE</span>
-            <h1>Move every deal<br /><span>forward with confidence.</span></h1>
-            <p>One workspace for quotations, risk controls, approvals and fulfillment — from first quote to revenue.</p>
+            <span className="eyebrow">{isFinance ? "FINANCE WORKSPACE" : role === "SALES_MANAGER" ? "MANAGEMENT WORKSPACE" : "SALES WORKSPACE"}</span>
+            <h1>{isFinance ? <>Govern every deal<br /><span>with financial control.</span></> : <>Move every deal<br /><span>forward with confidence.</span></>}</h1>
+            <p>{isFinance ? "Review financial exceptions, approvals and deal health before revenue is released." : "One workspace for quotations, risk controls, approvals and fulfillment — from first quote to revenue."}</p>
           </div>
           <div className="sales-hero-badge">
             <span className="pulse-dot" />
@@ -86,8 +93,8 @@ export default function SalesDashboard() {
 
         <div className="sales-section-heading">
           <div>
-            <span className="eyebrow">WORKFLOW MODULES</span>
-            <h2>Your command center</h2>
+            <span className="eyebrow">{isFinance ? "FINANCE MODULES" : "WORKFLOW MODULES"}</span>
+            <h2>{isFinance ? "Your control center" : "Your command center"}</h2>
           </div>
           <span className="sales-live-label">● Live workspace</span>
         </div>
@@ -112,15 +119,15 @@ export default function SalesDashboard() {
         <section className="sales-flow-card">
           <div>
             <span className="eyebrow">DEALFLOW</span>
-            <h2>From quote to cash</h2>
-            <p>Every decision is connected, traceable and ready for the next action.</p>
+            <h2>{isFinance ? "From approval to revenue" : "From quote to cash"}</h2>
+            <p>{isFinance ? "Financial governance keeps exceptions controlled before the deal becomes revenue." : "Every decision is connected, traceable and ready for the next action."}</p>
           </div>
           <div className="sales-flow-steps">
-            {['Quotation', 'Risk check', 'Approval', 'Fulfillment'].map((step, index) => (
+            {(isFinance ? ['Risk check', 'Manager', 'Finance', 'Revenue'] : ['Quotation', 'Risk check', 'Approval', 'Fulfillment']).map((step, index, steps) => (
               <div className="sales-flow-step" key={step}>
                 <span>{index + 1}</span>
                 <strong>{step}</strong>
-                {index < 3 && <i>→</i>}
+                {index < steps.length - 1 && <i>→</i>}
               </div>
             ))}
           </div>
