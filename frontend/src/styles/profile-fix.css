@@ -1,0 +1,5 @@
+/* DealFlow360 profile duplication fix */
+/* The legacy fixed launcher duplicates the header ProfileMenu. Keep the header menu only. */
+.profile-launcher-wrap {
+  display: none !important;
+}
