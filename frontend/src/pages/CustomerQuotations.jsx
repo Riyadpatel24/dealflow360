@@ -7,21 +7,18 @@ export default function CustomerQuotations() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  async function loadQuotations() {
-    try {
-      setLoading(true);
-      setError("");
-      const data = await getMyQuotations();
-      setQuotations(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    loadQuotations();
+    async function load() {
+      try {
+        const data = await getMyQuotations();
+        setQuotations(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
 
   return (
@@ -31,16 +28,15 @@ export default function CustomerQuotations() {
           <strong>DealFlow360</strong>
           <span className="topbar-subtitle">Customer / Quotations</span>
         </div>
-        <Link to="/customer" className="secondary-button">
-          ← Customer Portal
-        </Link>
+        <Link to="/customer" className="secondary-button">← Customer Portal</Link>
       </header>
 
       <main className="dashboard-container">
         <div className="page-heading">
           <div>
+            <div className="eyebrow">CUSTOMER WORKSPACE</div>
             <h1>My Quotations</h1>
-            <p>Quotations associated with your customer account.</p>
+            <p>Review quotations associated with your customer account.</p>
           </div>
         </div>
 
@@ -58,24 +54,16 @@ export default function CustomerQuotations() {
             <div className="table-wrapper">
               <table>
                 <thead>
-                  <tr>
-                    <th>Quotation</th>
-                    <th>Status</th>
-                    <th>Currency</th>
-                    <th>Created</th>
-                  </tr>
+                  <tr><th>Quotation</th><th>Status</th><th>Currency</th><th>Created</th><th>Action</th></tr>
                 </thead>
                 <tbody>
                   {quotations.map((quotation) => (
                     <tr key={quotation.id}>
                       <td><strong>{quotation.quotation_number}</strong></td>
-                      <td><span className="badge">{quotation.status}</span></td>
+                      <td><span className="badge">{String(quotation.status).replaceAll("_", " ")}</span></td>
                       <td>{quotation.currency}</td>
-                      <td>
-                        {quotation.created_at
-                          ? new Date(quotation.created_at).toLocaleDateString()
-                          : "—"}
-                      </td>
+                      <td>{quotation.created_at ? new Date(quotation.created_at).toLocaleDateString() : "—"}</td>
+                      <td><Link className="table-action" to={`/customer/quotations/${quotation.id}`}>View →</Link></td>
                     </tr>
                   ))}
                 </tbody>
