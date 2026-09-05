@@ -115,12 +115,18 @@ def deal_health(
         if quote.status in {"CANCELLED", "REJECTED"}:
             health = "BLOCKED"
             action = "Resolve the commercial blocker before progressing the deal."
-        elif quote.status == "UNDER_APPROVAL" or (risk and risk.risk_level == "HIGH"):
+        elif quote.status == "UNDER_APPROVAL":
             health = "AT_RISK"
-            action = "Review risk and complete the required approval step."
+            action = "Complete the required approval step."
         elif open_backorders:
-            health = "WATCH"
-            action = "Consolidate open backorders when stock becomes available."
+            health = "AT_RISK" if risk and risk.risk_level == "HIGH" else "WATCH"
+            if quote.status in {"INVOICED", "PAID"}:
+                action = "Follow up on open backorders and complete remaining fulfillment."
+            else:
+                action = "Resolve open backorders and complete fulfillment."
+        elif risk and risk.risk_level == "HIGH":
+            health = "AT_RISK"
+            action = "Review the commercial risk before progressing the deal."
         elif quote.status in {"FULFILLED", "INVOICED", "PAID"}:
             health = "HEALTHY"
             action = "No operational blocker. Continue revenue collection or close the deal."
