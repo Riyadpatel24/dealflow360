@@ -64,7 +64,9 @@ export default function QuotationDetail() {
   }, 0);
 
   const riskLevel = String(risk?.risk_level || "").toLowerCase();
-  const isBlocked = ["under_approval", "rejected"].includes(String(quotation.status).toLowerCase());
+  const status = String(quotation.status || "").toUpperCase();
+  const isBlocked = ["UNDER_APPROVAL", "REJECTED"].includes(status);
+  const isApproved = status === "APPROVED";
 
   return (
     <div className="app-shell quotation-detail-page">
@@ -89,10 +91,12 @@ export default function QuotationDetail() {
             <p>Customer ID: {quotation.customer_id} <span className="dot-separator">•</span> {quotation.currency || "USD"}</p>
           </div>
           <div className="quote-actions">
-            <button className="primary-small-button" onClick={runRiskEvaluation} disabled={evaluating || isBlocked}>
+            <button className="primary-small-button" onClick={runRiskEvaluation} disabled={evaluating || isBlocked || isApproved}>
               {evaluating ? "Evaluating..." : "Evaluate Risk"}
             </button>
-            <button className="secondary-button" onClick={() => navigate(`/sales/fulfillment/${quotationId}`)}>Fulfillment →</button>
+            {isApproved && (
+              <button className="secondary-button" onClick={() => navigate(`/sales/fulfillment/${quotationId}`)}>Fulfillment →</button>
+            )}
           </div>
         </section>
 
@@ -109,8 +113,8 @@ export default function QuotationDetail() {
           </div>
           <div className="detail-stat-card">
             <span>WORKFLOW</span>
-            <strong>{quotation.status === "APPROVED" ? "Ready" : quotation.status === "UNDER_APPROVAL" ? "Approval required" : "In progress"}</strong>
-            <small>Policy-controlled deal flow</small>
+            <strong>{isApproved ? "Ready" : status === "UNDER_APPROVAL" ? "Approval required" : "In progress"}</strong>
+            <small>{isApproved ? "Approved for fulfillment" : "Policy-controlled deal flow"}</small>
           </div>
         </section>
 
