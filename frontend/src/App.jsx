@@ -7,6 +7,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminPolicies from "./pages/AdminPolicies";
 import AdminProducts from "./pages/AdminProducts";
 import ProductDetail from "./pages/ProductDetail";
+import ProductDashboard from "./pages/ProductDashboard";
 import AdminUsers from "./pages/AdminUsers";
 import Approvals from "./pages/Approvals";
 import Billing from "./pages/Billing";
@@ -20,6 +21,7 @@ import CustomerQuotations from "./pages/CustomerQuotations";
 import CustomerQuotationDetail from "./pages/CustomerQuotationDetail";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
+const INTERNAL_ROLES = ["ADMIN", "SALES", "SALES_MANAGER", "FINANCE"];
 const SALES_WORKSPACE_ROLES = ["SALES", "SALES_MANAGER", "FINANCE"];
 
 export default function App() {
@@ -34,6 +36,10 @@ export default function App() {
         <Route path="/admin/products" element={<AdminProducts />} />
         <Route path="/admin/products/:productId" element={<ProductDetail />} />
         <Route path="/admin/policies" element={<AdminPolicies />} />
+      </Route>
+      <Route element={<ProtectedRoute allowedRoles={INTERNAL_ROLES} />}>
+        <Route path="/products" element={<ProductDashboard />} />
+        <Route path="/products/:productId" element={<ProductDetail />} />
       </Route>
       <Route element={<ProtectedRoute allowedRoles={SALES_WORKSPACE_ROLES} />}>
         <Route path="/sales" element={<SalesDashboard />} />
