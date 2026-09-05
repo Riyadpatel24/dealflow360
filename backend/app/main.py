@@ -6,12 +6,16 @@ from app.models.customer import Customer
 from app.models.product import Product
 from app.models.quotation import Quotation
 from app.models.quotation_line import QuotationLine
+from app.routers.quotations import router as quotations_router
 
 
 app = FastAPI(title="DealFlow360 API")
 
 
 Base.metadata.create_all(bind=engine)
+
+
+app.include_router(quotations_router)
 
 
 @app.get("/")
