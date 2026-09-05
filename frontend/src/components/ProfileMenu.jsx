@@ -24,9 +24,7 @@ export default function ProfileMenu() {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState(() => getProfile(user));
 
-  useEffect(() => {
-    setProfile(getProfile(user));
-  }, [user]);
+  useEffect(() => setProfile(getProfile(user)), [user]);
 
   useEffect(() => {
     function close(event) {
@@ -52,10 +50,7 @@ export default function ProfileMenu() {
     <div className="profile-menu" ref={ref}>
       <button className="profile-menu-trigger" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
         <span className="profile-menu-avatar">{avatar}</span>
-        <span className="profile-menu-copy">
-          <strong>{name}</strong>
-          <small>{role}</small>
-        </span>
+        <span className="profile-menu-copy"><strong>{name}</strong><small>{role}</small></span>
         <span className="profile-menu-chevron">⌄</span>
       </button>
 
@@ -63,10 +58,7 @@ export default function ProfileMenu() {
         <div className="profile-menu-popover">
           <div className="profile-menu-summary">
             <span className="profile-menu-avatar profile-menu-avatar-large">{avatar}</span>
-            <div>
-              <strong>{name}</strong>
-              <span>{user.email}</span>
-            </div>
+            <div><strong>{name}</strong><span>{user.email}</span></div>
           </div>
           <div className="profile-menu-divider" />
           <Link to="/profile" onClick={() => setOpen(false)}>👤 My profile</Link>
