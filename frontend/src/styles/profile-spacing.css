@@ -1,0 +1,4 @@
+/* Profile layout refinement: keep the summary panel close to the primary workspace panels. */
+.profile-grid{row-gap:10px!important;column-gap:14px!important}
+@media(max-width:900px){.profile-grid{row-gap:10px!important;column-gap:0!important}}
+@media(max-width:640px){.profile-grid{row-gap:8px!important}}
