@@ -7,9 +7,12 @@ from app.database.base import Base
 
 
 class QuotationLine(Base):
+
     __tablename__ = "quotation_lines"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(
+        primary_key=True
+    )
 
     quotation_id: Mapped[int] = mapped_column(
         ForeignKey("quotations.id"),

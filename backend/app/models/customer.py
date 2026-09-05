@@ -5,9 +5,26 @@ from app.database.base import Base
 
 
 class Customer(Base):
+
     __tablename__ = "customers"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(100), nullable=False)
-    email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
-    tier: Mapped[str] = mapped_column(String(20), nullable=False, default="Bronze")
+    id: Mapped[int] = mapped_column(
+        primary_key=True
+    )
+
+    name: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False,
+    )
+
+    email: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+        unique=True,
+    )
+
+    tier: Mapped[str] = mapped_column(
+        String(20),
+        nullable=False,
+        default="Bronze",
+    )

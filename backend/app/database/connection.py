@@ -9,7 +9,12 @@ DATABASE_URL = os.getenv(
     "postgresql+psycopg2://dealflow:dealflow_dev@localhost:5432/dealflow360",
 )
 
-engine = create_engine(DATABASE_URL)
+
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,
+)
+
 
 SessionLocal = sessionmaker(
     bind=engine,
