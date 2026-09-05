@@ -1,0 +1,133 @@
+/* DealFlow360 visual system: Butter / Moss / Palm / Guava / Sunset / Sangria / Seabreeze / Lagoon / Odyssey */
+:root {
+  --df-butter: #F9DC83;
+  --df-moss: #C4B65D;
+  --df-palm: #657C56;
+  --df-guava: #F3B0A1;
+  --df-sunset: #E69B72;
+  --df-sangria: #E16459;
+  --df-seabreeze: #EEF5F7;
+  --df-lagoon: #95BFC0;
+  --df-odyssey: #055B78;
+  --df-odyssey-dark: #073F52;
+  --df-ink: #173F4D;
+  --df-muted: #637780;
+  --df-border: #C9D9DC;
+  --df-surface: #FFFFFF;
+}
+
+html, body, #root { min-height: 100%; }
+body { background: var(--df-seabreeze) !important; color: var(--df-ink) !important; }
+
+/* Page backgrounds */
+.app-shell, .auth-page, .profile-page, .dashboard-page, .sales-page, .customer-page, .admin-page,
+.dashboard-container, .customer-dashboard, .quotation-page, .quotation-detail-page, .operations-page,
+.approvals-page, .fulfillment-page, .deal-health-page, .reports-page, .products-page, .billing-page,
+.subscription-page, main { background: var(--df-seabreeze) !important; color: var(--df-ink) !important; }
+
+/* Navigation and cards */
+.topbar, .sales-topbar, .auth-card, .content-card, .module-card, .detail-stat-card,
+.card, .panel, .table-card, .sales-module, .sales-flow-card, .sales-stat,
+.feature-card, .quote-card, .quotation-card, .summary-card, .stat-card, .form-card {
+  background: #fff !important;
+  border-color: var(--df-border) !important;
+}
+.topbar, .sales-topbar { box-shadow: 0 2px 14px rgba(5,91,120,.08) !important; }
+
+/* Core typography */
+.page-heading h1, .brand-section h1, .topbar strong, .auth-heading h2,
+.module-card h2, .content-card h2, .detail-stat-card strong, .quote-title-row h1,
+.sales-hero h1, .sales-module h3, .sales-flow-card h2, .profile-header h1,
+.profile-side-card h2, h1, h2, h3 { color: var(--df-odyssey); }
+.page-heading p, .brand-section p, .auth-heading p, .module-card p, .topbar-subtitle,
+.topbar-user, .feature-header p, .coming-soon, .detail-stat-card span, .detail-stat-card small,
+.sales-hero p, .sales-stat small, .sales-module p, .sales-flow-card p, .sales-brand small,
+.sales-user-copy span, .profile-header p, .profile-card-heading p, .profile-field small,
+.profile-avatar-picker small, .profile-side-card > p, .muted, .subtitle { color: var(--df-muted) !important; }
+
+/* Primary action */
+.brand-icon, .sales-brand-mark, .primary-button, .primary-small-button,
+.primary-action, .btn-primary, .submit-button {
+  background: var(--df-odyssey) !important;
+  border-color: var(--df-odyssey) !important;
+  color: #fff !important;
+}
+.brand-icon, .sales-brand-mark { box-shadow: 0 8px 18px rgba(5,91,120,.16) !important; }
+.primary-button:hover:not(:disabled), .primary-small-button:hover:not(:disabled),
+.primary-action:hover:not(:disabled), .btn-primary:hover:not(:disabled), .submit-button:hover:not(:disabled) {
+  background: var(--df-odyssey-dark) !important;
+}
+
+/* Links */
+a, .signup-link a, .table-link, .module-link, .text-link, .sales-module-link { color: var(--df-odyssey); }
+a:hover { color: var(--df-palm); }
+
+/* Form controls */
+input, select, textarea, .form-group input, .form-group select, .form-group textarea,
+.admin-form input, .admin-form select {
+  border-color: var(--df-border) !important;
+  background: #fff !important;
+  color: var(--df-ink) !important;
+}
+input:focus, select:focus, textarea:focus, .form-group input:focus,
+.form-group select:focus, .form-group textarea:focus, .admin-form input:focus,
+.admin-form select:focus {
+  border-color: var(--df-odyssey) !important;
+  box-shadow: 0 0 0 3px rgba(5,91,120,.12) !important;
+  outline: none;
+}
+.secondary-button, .secondary-action {
+  border-color: var(--df-border) !important;
+  background: #fff !important;
+  color: var(--df-odyssey) !important;
+}
+.secondary-button:hover, .secondary-action:hover { background: var(--df-seabreeze) !important; border-color: var(--df-lagoon) !important; }
+
+/* Admin dashboard and module tiles */
+.module-icon, .sales-module-icon { background: #E4F0F2 !important; color: var(--df-odyssey) !important; }
+.module-card:hover, .sales-module:hover { border-color: var(--df-odyssey) !important; box-shadow: 0 14px 32px rgba(5,91,120,.09) !important; }
+
+/* Status and risk colors */
+.badge, .status-pill, .profile-role { background: #E4F0F2 !important; color: var(--df-odyssey) !important; }
+.risk-badge.high, .status-rejected { background:#FCE6E1 !important; color:#A7443B !important; }
+.risk-badge.medium, .status-under-approval { background:#FFF2CF !important; color:#76651D !important; }
+.risk-badge.low, .status-approved { background:#E6F1E4 !important; color:#4E6D43 !important; }
+.status-draft { background:#E8EFF1 !important; color:#637780 !important; }
+.success-message { background:#E6F1E4 !important; border-color:#B9D0B1 !important; color:#45643B !important; }
+.error-message { background:#FCE6E1 !important; border-color:#E7AAA0 !important; color:#9C4037 !important; }
+.info-message { background:#E4F0F2 !important; border-color:#B5D0D4 !important; color:#055B78 !important; }
+.risk-summary > div, .workflow-grid > div, .profile-avatar-picker { background:#F7FBFC !important; border-color:var(--df-border) !important; }
+table tbody tr:hover { background:#F7FBFC !important; }
+th { color:#6D7F86 !important; }
+
+/* Profile menu */
+.profile-menu-trigger { border-color:var(--df-border) !important; background:#fff !important; color:var(--df-ink) !important; }
+.profile-menu-trigger:hover { border-color:var(--df-lagoon) !important; background:#F7FBFC !important; }
+.profile-menu-avatar, .profile-avatar-large, .profile-mini-avatar { background:#E4F0F2 !important; }
+.profile-menu-popover { background:#fff !important; border-color:var(--df-border) !important; box-shadow:0 16px 38px rgba(5,91,120,.14) !important; }
+.profile-menu-popover a:hover { background:#E4F0F2 !important; color:var(--df-odyssey) !important; }
+
+/* Password security */
+.password-requirements {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px 10px;
+  margin-top:4px;
+  padding:10px 12px;
+  border:1px solid var(--df-border);
+  border-radius:10px;
+  background:#F7FBFC;
+}
+.password-requirements strong { grid-column:1/-1; font-size:10px; color:var(--df-ink); }
+.password-requirements span { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--df-muted); }
+.password-requirements span.valid { color:var(--df-palm); }
+.password-requirements span.invalid { color:var(--df-muted); }
+.password-requirements b { font-size:12px; }
+.password-match { color:var(--df-palm) !important; }
+.password-mismatch { color:var(--df-sangria) !important; }
+
+/* Keep the visual system responsive */
+@media (max-width: 800px) {
+  .module-grid, .risk-summary, .workflow-grid, .admin-form, .profile-grid, .profile-form-grid { grid-template-columns:1fr !important; }
+  .password-requirements { grid-template-columns:1fr; }
+}
