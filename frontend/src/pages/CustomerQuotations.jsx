@@ -11,9 +11,7 @@ export default function CustomerQuotations() {
     try {
       setLoading(true);
       setError("");
-
       const data = await getMyQuotations();
-
       setQuotations(data);
     } catch (err) {
       setError(err.message);
@@ -28,57 +26,33 @@ export default function CustomerQuotations() {
 
   return (
     <div className="app-shell">
-
       <header className="topbar">
         <div>
           <strong>DealFlow360</strong>
-          <span className="topbar-subtitle">
-            Customer / Quotations
-          </span>
+          <span className="topbar-subtitle">Customer / Quotations</span>
         </div>
-
-        <Link
-          to="/customer"
-          className="secondary-button"
-        >
+        <Link to="/customer" className="secondary-button">
           ← Customer Portal
         </Link>
       </header>
 
       <main className="dashboard-container">
-
         <div className="page-heading">
           <div>
             <h1>My Quotations</h1>
-            <p>
-              Quotations associated with your customer account.
-            </p>
+            <p>Quotations associated with your customer account.</p>
           </div>
-
-          <button
-            className="secondary-button"
-            onClick={loadQuotations}
-          >
-            Refresh
-          </button>
         </div>
 
-        {error && (
-          <div className="error-message">
-            {error}
-          </div>
-        )}
+        {error && <div className="error-message">{error}</div>}
 
         <section className="content-card">
-
           {loading ? (
             <p>Loading quotations...</p>
           ) : quotations.length === 0 ? (
             <div className="empty-state">
               <h3>No quotations found</h3>
-              <p>
-                Your account currently has no quotations.
-              </p>
+              <p>Your account currently has no quotations.</p>
             </div>
           ) : (
             <div className="table-wrapper">
@@ -91,31 +65,15 @@ export default function CustomerQuotations() {
                     <th>Created</th>
                   </tr>
                 </thead>
-
                 <tbody>
                   {quotations.map((quotation) => (
                     <tr key={quotation.id}>
-                      <td>
-                        <strong>
-                          {quotation.quotation_number}
-                        </strong>
-                      </td>
-
-                      <td>
-                        <span className="badge">
-                          {quotation.status}
-                        </span>
-                      </td>
-
-                      <td>
-                        {quotation.currency}
-                      </td>
-
+                      <td><strong>{quotation.quotation_number}</strong></td>
+                      <td><span className="badge">{quotation.status}</span></td>
+                      <td>{quotation.currency}</td>
                       <td>
                         {quotation.created_at
-                          ? new Date(
-                              quotation.created_at
-                            ).toLocaleDateString()
+                          ? new Date(quotation.created_at).toLocaleDateString()
                           : "—"}
                       </td>
                     </tr>
@@ -124,9 +82,7 @@ export default function CustomerQuotations() {
               </table>
             </div>
           )}
-
         </section>
-
       </main>
     </div>
   );
