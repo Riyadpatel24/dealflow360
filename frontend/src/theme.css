@@ -1,0 +1,166 @@
+:root {
+  --df-blue: #2979BF;
+  --df-navy: #1F3C58;
+  --df-white: #FFFFFF;
+  --df-bg: #F4F7FA;
+  --df-surface: #EAF3FA;
+  --df-border: #D7E1EA;
+  --df-muted: #64788A;
+  --df-success: #2E8B57;
+  --df-warning: #D99000;
+  --df-danger: #C94A4A;
+}
+
+body {
+  background: var(--df-bg);
+  color: var(--df-navy);
+}
+
+.auth-page {
+  background:
+    radial-gradient(circle at 8% 20%, rgba(41,121,191,.10), transparent 34%),
+    radial-gradient(circle at 48% 88%, rgba(41,121,191,.07), transparent 28%),
+    var(--df-bg);
+}
+
+.auth-card,
+.content-card,
+.module-card {
+  background: var(--df-white);
+  border-color: var(--df-border);
+}
+
+.brand-icon {
+  background: var(--df-blue);
+}
+
+.brand-section p,
+.auth-heading p,
+.demo-accounts p,
+.page-heading p,
+.module-card p,
+.topbar-subtitle,
+.topbar-user,
+.feature-header p,
+.coming-soon,
+.signup-link {
+  color: var(--df-muted);
+}
+
+.primary-button,
+.primary-small-button {
+  background: var(--df-blue);
+}
+
+.primary-button:hover:not(:disabled),
+.primary-small-button:hover:not(:disabled) {
+  background: #216AA9;
+}
+
+.form-group input:focus,
+.admin-form input:focus,
+.admin-form select:focus {
+  border-color: var(--df-blue);
+  box-shadow: 0 0 0 3px rgba(41,121,191,.10);
+}
+
+.signup-link a,
+.table-link,
+.module-link {
+  color: var(--df-blue);
+}
+
+.secondary-button {
+  border-color: var(--df-border);
+  color: var(--df-navy);
+}
+
+.secondary-button:hover {
+  background: var(--df-surface);
+}
+
+.module-card:hover {
+  border-color: rgba(41,121,191,.35);
+  box-shadow: 0 14px 35px rgba(31,60,88,.09);
+}
+
+.module-icon {
+  background: var(--df-surface);
+}
+
+.badge {
+  background: #EAF3FA;
+  color: var(--df-blue);
+}
+
+.risk-badge.high {
+  background: #FCE9E9;
+  color: var(--df-danger);
+}
+
+.risk-badge.medium {
+  background: #FFF4D9;
+  color: var(--df-warning);
+}
+
+.risk-badge.low {
+  background: #E7F5ED;
+  color: var(--df-success);
+}
+
+.workflow-grid span {
+  color: var(--df-blue);
+}
+
+.error-message {
+  background: #FFF1F1;
+  border-color: #F3C5C5;
+  color: var(--df-danger);
+}
+
+.success-message {
+  background: #EAF6EF;
+  border-color: #B9DEC8;
+  color: var(--df-success);
+}
+
+.info-message {
+  background: var(--df-surface);
+  border-color: #BDD8EB;
+  color: var(--df-blue);
+}
+
+.topbar {
+  background: var(--df-white);
+  border-bottom-color: var(--df-border);
+}
+
+.topbar strong,
+.page-heading h1,
+.module-card h2,
+.content-card h2,
+.brand-section h1,
+.auth-heading h2 {
+  color: var(--df-navy);
+}
+
+.dashboard-container {
+  padding-top: 42px;
+}
+
+@media (max-width: 800px) {
+  .auth-page {
+    padding: 20px 14px;
+  }
+
+  .auth-card {
+    padding: 30px 24px;
+  }
+
+  .module-grid,
+  .risk-summary,
+  .workflow-grid,
+  .admin-form {
+    grid-template-columns: 1fr;
+  }
+}
