@@ -46,16 +46,18 @@ export default function Approvals() {
 
   useEffect(() => { loadApprovals(); }, []);
   const role = user?.role;
+  const isFinance = role === "FINANCE";
+  const workspaceLabel = isFinance ? "Finance Operations" : role === "SALES_MANAGER" ? "Sales Manager" : "Sales Workspace";
 
   return (
     <div className="app-shell approval-page">
       <header className="topbar">
-        <div className="brand-lockup"><strong>DealFlow360</strong><span className="topbar-subtitle">Sales / Approvals</span></div>
-        <Link to="/sales" className="secondary-button">← Sales Dashboard</Link>
+        <div className="brand-lockup"><strong>DealFlow360</strong><span className="topbar-subtitle">{workspaceLabel} / Approvals</span></div>
+        <Link to="/sales" className="secondary-button">← {isFinance ? "Finance Operations" : "Sales Dashboard"}</Link>
       </header>
       <main className="dashboard-container">
         <div className="page-heading">
-          <div><div className="eyebrow">GOVERNANCE CENTER</div><h1>Approval Queue</h1><p>Review policy exceptions and move deals through the correct approval chain.</p></div>
+          <div><div className="eyebrow">GOVERNANCE CENTER</div><h1>Approval Queue</h1><p>{isFinance ? "Review finance approvals and release cleared deals for fulfillment." : "Review policy exceptions and move deals through the correct approval chain."}</p></div>
           <span className="approval-role">{role === "FINANCE" ? "Finance review" : role === "SALES_MANAGER" ? "Manager review" : "Admin review"}</span>
         </div>
         {error && <div className="error-message">{error}</div>}
@@ -67,6 +69,7 @@ export default function Approvals() {
               const actionable = approval.steps?.find(step => step.status === "PENDING");
               const canAct = actionable && (role === "ADMIN" || role === actionable.approver_role);
               const key = `${quotation.id}-${actionable?.id || ""}`;
+              const approved = quotation.status === "APPROVED" && approval.approval_request.status === "APPROVED";
               return (
                 <section className="content-card approval-card" key={approval.approval_request.id}>
                   <div className="approval-card-head">
@@ -83,7 +86,13 @@ export default function Approvals() {
                       </div>
                     ))}
                   </div>
-                  <div className="approval-card-footer"><span>Sequential governance: Manager → Finance</span><Link className="table-link" to={`/sales/quotations/${quotation.id}`}>Open quotation →</Link></div>
+                  <div className="approval-card-footer">
+                    <span>Sequential governance: Manager → Finance</span>
+                    <div className="approval-footer-actions">
+                      <Link className="table-link" to={`/sales/quotations/${quotation.id}`}>Open quotation →</Link>
+                      {approved && <Link className="primary-small-button" to={`/sales/fulfillment/${quotation.id}`}>Fulfillment →</Link>}
+                    </div>
+                  </div>
                 </section>
               );
             })}
