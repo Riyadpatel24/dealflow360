@@ -1,21 +1,21 @@
 /* DealFlow360 — profile layout / alignment */
-.profile-shell{width:min(1160px,calc(100% - 48px));margin:0 auto;padding:28px 0 64px}
-.profile-header{display:flex;align-items:center;justify-content:space-between;gap:32px;margin:0 0 28px}
+.profile-shell{width:min(1160px,calc(100% - 48px));margin:0 auto;padding:28px 0 44px}
+.profile-header{display:flex;align-items:center;justify-content:space-between;gap:32px;margin:0 0 22px}
 .profile-header>div:first-child{min-width:0}
 .profile-header .profile-avatar-large{flex:0 0 82px}
-.profile-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,340px);grid-template-areas:"personal password" "side .";gap:20px;align-items:start}
+.profile-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,340px);grid-template-areas:"personal password" "summary summary";gap:12px 14px;align-items:stretch}
 .profile-grid>.profile-card:first-child{grid-area:personal;min-width:0}
 .profile-grid>.password-card{grid-area:password;min-width:0}
-.profile-grid>.profile-side-card{grid-area:side;min-width:0}
+.profile-grid>.profile-side-card{grid-area:summary;min-width:0}
 .profile-card{box-sizing:border-box;width:100%}
 .profile-card-heading{align-items:flex-start}
 .profile-card-heading>div{min-width:0}
 .profile-card-heading h2{font-size:18px;line-height:1.15}
 .profile-card-heading p{max-width:520px;line-height:1.4}
-.profile-form-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.profile-form-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
 .password-card .profile-form-grid{grid-template-columns:1fr}
-.password-card .profile-actions{margin-top:18px}
-.password-requirements{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;margin-top:9px;padding:10px;border:1px solid var(--df-border);border-radius:9px;background:var(--df-lavender);font-size:9px}
+.password-card .profile-actions{margin-top:16px}
+.password-requirements{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;margin-top:7px;padding:9px;border:1px solid var(--df-border);border-radius:9px;background:var(--df-lavender);font-size:9px}
 .password-requirements strong{grid-column:1/-1;font-size:10px;color:var(--df-navy)!important}
 .password-requirements span{display:flex;align-items:center;gap:5px;color:var(--df-muted)}
 .password-requirements span.valid{color:var(--df-success)}
@@ -26,12 +26,12 @@
 .profile-side-card h2{font-size:17px}
 @media(max-width:900px){
   .profile-shell{width:min(100% - 32px,720px)}
-  .profile-grid{grid-template-columns:1fr;grid-template-areas:"personal" "password" "side"}
+  .profile-grid{grid-template-columns:1fr;grid-template-areas:"personal" "password" "summary";gap:12px}
   .password-card{max-width:none}
 }
 @media(max-width:600px){
   .profile-shell{width:calc(100% - 24px);padding-top:20px}
-  .profile-header{gap:18px;margin-bottom:20px}
+  .profile-header{gap:18px;margin-bottom:18px}
   .profile-header .profile-avatar-large{width:64px;height:64px;flex-basis:64px;font-size:32px}
   .profile-card-heading{flex-direction:column;gap:10px;margin-bottom:18px}
   .profile-card-heading .profile-role{align-self:flex-start}
