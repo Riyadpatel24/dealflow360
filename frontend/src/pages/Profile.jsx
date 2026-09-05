@@ -22,9 +22,35 @@ export default function Profile() {
   if (!user) return null;
   const roleLabel = (user.role || "USER").replaceAll("_", " ");
   const initials = (name || user.email || "U").trim().charAt(0).toUpperCase();
+  const passwordChecks = [
+    [passwords.next.length >= 8, "At least 8 characters"],
+    [/[A-Z]/.test(passwords.next), "1 uppercase letter"],
+    [/[0-9]/.test(passwords.next), "1 number"],
+    [/[^A-Za-z0-9]/.test(passwords.next), "1 special character"],
+  ];
+  const passwordStrong = passwordChecks.every(([ok]) => ok);
 
-  function saveProfile(event) { event.preventDefault(); const profile = { name: name.trim() || user.name || "DealFlow User", mobile: mobile.trim(), avatar }; localStorage.setItem(profileKey(user.email), JSON.stringify(profile)); setSavedMessage("Profile updated successfully."); window.setTimeout(() => setSavedMessage(""), 2200); }
-  async function savePassword(event) { event.preventDefault(); setPasswordError(""); setPasswordMessage(""); if (passwords.next !== passwords.confirm) return setPasswordError("New passwords do not match."); try { await changePassword(passwords.current, passwords.next, token); setPasswordMessage("Password changed successfully."); setPasswords({ current: "", next: "", confirm: "" }); } catch (e) { setPasswordError(e.message); } }
+  function saveProfile(event) {
+    event.preventDefault();
+    const profile = { name: name.trim() || user.name || "DealFlow User", mobile: mobile.trim(), avatar };
+    localStorage.setItem(profileKey(user.email), JSON.stringify(profile));
+    setSavedMessage("Profile updated successfully.");
+    window.setTimeout(() => setSavedMessage(""), 2200);
+  }
+
+  async function savePassword(event) {
+    event.preventDefault();
+    setPasswordError("");
+    setPasswordMessage("");
+    if (!passwordStrong) return setPasswordError("Choose a password that meets all security requirements.");
+    if (passwords.next !== passwords.confirm) return setPasswordError("New passwords do not match.");
+    try {
+      await changePassword(passwords.current, passwords.next, token);
+      setPasswordMessage("Password changed successfully.");
+      setPasswords({ current: "", next: "", confirm: "" });
+    } catch (e) { setPasswordError(e.message); }
+  }
+
   function handleLogout() { logout(); navigate("/login", { replace: true }); }
 
   return <div className="profile-page"><div className="profile-shell">
@@ -41,7 +67,20 @@ export default function Profile() {
         <div className="profile-avatar-picker"><div><label>Choose your avatar</label><small>A little personality for your workspace.</small></div><div className="avatar-options">{AVATARS.map(item => <button key={item} type="button" className={`avatar-option ${avatar === item ? "selected" : ""}`} onClick={() => setAvatar(item)}>{item}</button>)}</div></div>
         {savedMessage && <div className="success-message">{savedMessage}</div>}<div className="profile-actions"><button className="primary-small-button" type="submit">Save changes</button><button className="secondary-button" type="button" onClick={() => navigate(-1)}>Cancel</button></div></form>
       </section>
-      <section className="content-card profile-card password-card"><div className="profile-card-heading"><div><h2>Password & security</h2><p>Update your password without leaving the workspace.</p></div><span>SECURE</span></div><form onSubmit={savePassword}><div className="profile-form-grid"><div className="profile-field profile-field-full"><label>Current password</label><input type="password" value={passwords.current} onChange={e => setPasswords({...passwords,current:e.target.value})} required /></div><div className="profile-field"><label>New password</label><input type="password" minLength="8" value={passwords.next} onChange={e => setPasswords({...passwords,next:e.target.value})} required /></div><div className="profile-field"><label>Confirm new password</label><input type="password" minLength="8" value={passwords.confirm} onChange={e => setPasswords({...passwords,confirm:e.target.value})} required /></div></div>{passwordError && <div className="error-message">{passwordError}</div>}{passwordMessage && <div className="success-message">{passwordMessage}</div>}<div className="profile-actions"><button className="primary-small-button" type="submit">Change password</button></div></form></section>
+      <section className="content-card profile-card password-card">
+        <div className="profile-card-heading"><div><h2>Password & security</h2><p>Verify your current password before creating a new one.</p></div><span className="profile-role">SECURE</span></div>
+        <form onSubmit={savePassword}>
+          <div className="profile-form-grid">
+            <div className="profile-field profile-field-full"><label htmlFor="current-password">Current password</label><input id="current-password" type="password" autoComplete="current-password" value={passwords.current} onChange={e => setPasswords({...passwords,current:e.target.value})} required /></div>
+            <div className="profile-field profile-field-full"><label htmlFor="new-password">New password</label><input id="new-password" type="password" autoComplete="new-password" minLength="8" value={passwords.next} onChange={e => setPasswords({...passwords,next:e.target.value})} required aria-describedby="password-requirements" />
+              <div id="password-requirements" className="password-requirements"><strong>Password must contain:</strong>{passwordChecks.map(([ok, text]) => <span key={text} className={ok ? "valid" : "invalid"}><b>{ok ? "✓" : "○"}</b>{text}</span>)}</div>
+            </div>
+            <div className="profile-field profile-field-full"><label htmlFor="confirm-password">Confirm new password</label><input id="confirm-password" type="password" autoComplete="new-password" minLength="8" value={passwords.confirm} onChange={e => setPasswords({...passwords,confirm:e.target.value})} required />{passwords.confirm && <small className={passwords.next === passwords.confirm ? "password-match" : "password-mismatch"}>{passwords.next === passwords.confirm ? "Passwords match." : "Passwords do not match."}</small>}</div>
+          </div>
+          {passwordError && <div className="error-message">{passwordError}</div>}{passwordMessage && <div className="success-message">{passwordMessage}</div>}
+          <div className="profile-actions"><button className="primary-small-button" type="submit">Change password</button></div>
+        </form>
+      </section>
       <aside className="content-card profile-side-card"><div className="profile-mini-avatar">{avatar}</div><h2>{name || "DealFlow User"}</h2><p>{user.email}</p><span className="profile-role">{roleLabel}</span><div className="profile-side-divider" /><button className="profile-logout" type="button" onClick={handleLogout}>↪ Log out</button></aside>
     </div>
   </div></div>;
