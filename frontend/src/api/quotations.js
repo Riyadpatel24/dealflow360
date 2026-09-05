@@ -53,6 +53,13 @@ export async function getQuotationApproval(quotationId) {
   return request(`/quotations/${quotationId}/approval`);
 }
 
+export async function actOnQuotationApproval(quotationId, stepId, action, reason = null) {
+  return request(`/quotations/${quotationId}/approval/${stepId}/action`, {
+    method: "POST",
+    body: JSON.stringify({ action, reason }),
+  });
+}
+
 export async function getMyQuotations() {
   return request("/quotations/customer/my-quotes");
 }
