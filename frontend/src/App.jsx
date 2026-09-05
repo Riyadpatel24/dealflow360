@@ -6,6 +6,7 @@ import AdminCustomers from "./pages/AdminCustomers";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminPolicies from "./pages/AdminPolicies";
 import AdminProducts from "./pages/AdminProducts";
+import ProductDetail from "./pages/ProductDetail";
 import AdminUsers from "./pages/AdminUsers";
 import Approvals from "./pages/Approvals";
 import Billing from "./pages/Billing";
@@ -31,6 +32,7 @@ export default function App() {
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/customers" element={<AdminCustomers />} />
         <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="/admin/products/:productId" element={<ProductDetail />} />
         <Route path="/admin/policies" element={<AdminPolicies />} />
       </Route>
       <Route element={<ProtectedRoute allowedRoles={SALES_WORKSPACE_ROLES} />}>
