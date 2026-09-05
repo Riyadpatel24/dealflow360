@@ -1,0 +1,294 @@
+.profile-launcher-wrap {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 1000;
+}
+
+.profile-launcher {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 170px;
+  padding: 6px 9px 6px 7px;
+  border: 1px solid var(--df-border);
+  border-radius: 999px;
+  background: rgba(255,255,255,.96);
+  color: var(--df-ink);
+  box-shadow: 0 6px 18px rgba(5,91,120,.10);
+  backdrop-filter: blur(8px);
+}
+
+.profile-launcher:hover {
+  border-color: var(--df-lagoon);
+  box-shadow: 0 8px 22px rgba(5,91,120,.14);
+}
+
+.profile-avatar {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--df-butter), var(--df-guava));
+  border: 2px solid #fff;
+  box-shadow: 0 2px 7px rgba(36,63,70,.12);
+  font-size: 20px;
+}
+
+.profile-launcher-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  text-align: left;
+}
+
+.profile-launcher-copy strong {
+  max-width: 105px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--df-odyssey);
+}
+
+.profile-launcher-copy small {
+  max-width: 105px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--df-muted);
+  font-size: 9px;
+  text-transform: capitalize;
+}
+
+.profile-chevron {
+  color: var(--df-muted);
+  font-size: 15px;
+}
+
+.profile-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 12%, rgba(249,220,131,.16), transparent 28%),
+    radial-gradient(circle at 92% 82%, rgba(149,191,192,.18), transparent 30%),
+    var(--df-seabreeze);
+}
+
+.profile-shell {
+  width: min(1080px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 34px 0 70px;
+}
+
+.profile-back {
+  border: 0;
+  background: transparent;
+  color: var(--df-odyssey);
+  font-weight: 700;
+  padding: 4px 0;
+  margin-bottom: 24px;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  margin-bottom: 26px;
+}
+
+.profile-header h1 {
+  margin: 0;
+  color: var(--df-odyssey);
+  font-size: clamp(32px, 4vw, 44px);
+  letter-spacing: -1.4px;
+}
+
+.profile-header p {
+  margin: 7px 0 0;
+  color: var(--df-muted);
+}
+
+.profile-avatar-large {
+  width: 82px;
+  height: 82px;
+  flex-basis: 82px;
+  font-size: 42px;
+  border-width: 3px;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 18px;
+  align-items: start;
+}
+
+.profile-card,
+.profile-side-card {
+  margin: 0;
+}
+
+.profile-card-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.profile-card-heading h2,
+.profile-side-card h2 {
+  margin: 0 0 5px;
+  color: var(--df-odyssey);
+}
+
+.profile-card-heading p,
+.profile-side-card p {
+  margin: 0;
+  color: var(--df-muted);
+  font-size: 12px;
+}
+
+.profile-role {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #e4f0f2;
+  color: var(--df-odyssey);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.profile-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.profile-field-full { grid-column: 1 / -1; }
+
+.profile-field label,
+.profile-avatar-picker label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--df-ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.profile-field input {
+  width: 100%;
+  height: 46px;
+  padding: 0 13px;
+  border: 1px solid var(--df-border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--df-ink);
+  outline: none;
+}
+
+.profile-field input:read-only {
+  background: #f4f7f8;
+  color: var(--df-muted);
+}
+
+.profile-field small,
+.profile-avatar-picker small {
+  display: block;
+  margin-top: 6px;
+  color: var(--df-muted);
+  font-size: 10px;
+}
+
+.profile-avatar-picker {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  margin-top: 25px;
+  padding: 16px;
+  border: 1px solid var(--df-border);
+  border-radius: 12px;
+  background: #f8fafb;
+}
+
+.avatar-options {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.avatar-option {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--df-border);
+  border-radius: 50%;
+  background: #fff;
+  font-size: 21px;
+  transition: .15s ease;
+}
+
+.avatar-option:hover { transform: translateY(-2px); border-color: var(--df-lagoon); }
+.avatar-option.selected { border: 2px solid var(--df-odyssey); background: #eaf4f5; transform: translateY(-2px); }
+
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.profile-actions .primary-small-button { width: auto; padding: 0 22px; }
+
+.profile-side-card {
+  text-align: center;
+  padding: 28px 20px;
+}
+
+.profile-mini-avatar {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--df-butter), var(--df-guava));
+  font-size: 36px;
+  box-shadow: 0 8px 20px rgba(36,63,70,.12);
+}
+
+.profile-side-card .profile-role { margin-top: 12px; }
+.profile-side-divider { height: 1px; background: var(--df-border); margin: 24px 0 18px; }
+
+.profile-logout {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #efc1ba;
+  border-radius: 9px;
+  background: #fff7f5;
+  color: #a84439;
+  font-weight: 800;
+}
+.profile-logout:hover { background: #f9ded9; }
+
+@media (max-width: 760px) {
+  .profile-launcher-wrap { top: 10px; right: 10px; }
+  .profile-launcher-copy { display: none; }
+  .profile-launcher { min-width: auto; padding: 5px; gap: 0; }
+  .profile-chevron { display: none; }
+  .profile-shell { width: min(100% - 28px, 1080px); padding-top: 24px; }
+  .profile-grid, .profile-form-grid { grid-template-columns: 1fr; }
+  .profile-field-full { grid-column: auto; }
+  .profile-header { align-items: flex-start; }
+  .profile-avatar-picker { flex-direction: column; align-items: flex-start; }
+  .avatar-options { justify-content: flex-start; }
+}
