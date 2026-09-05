@@ -1,6 +1,7 @@
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 import json
+import re
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from sqlalchemy import func, or_
@@ -216,8 +217,18 @@ def dealflow_ai(quotation_id: int, current_user: User = Depends(require_role("AD
 def change_password(payload: dict = Body(...), current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     current = str(payload.get("current_password") or "")
     new = str(payload.get("new_password") or "")
-    if len(new) < 8: raise HTTPException(status_code=400, detail="New password must be at least 8 characters")
-    if not verify_password(current, current_user.password_hash): raise HTTPException(status_code=400, detail="Current password is incorrect")
+    if not verify_password(current, current_user.password_hash):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    if len(new) < 8:
+        raise HTTPException(status_code=400, detail="New password must be at least 8 characters")
+    if not re.search(r"[A-Z]", new):
+        raise HTTPException(status_code=400, detail="New password must contain at least 1 uppercase letter")
+    if not re.search(r"[0-9]", new):
+        raise HTTPException(status_code=400, detail="New password must contain at least 1 number")
+    if not re.search(r"[^A-Za-z0-9]", new):
+        raise HTTPException(status_code=400, detail="New password must contain at least 1 special character")
+    if verify_password(new, current_user.password_hash):
+        raise HTTPException(status_code=400, detail="New password must be different from your current password")
     current_user.password_hash = hash_password(new)
     _audit(db, current_user.id, "USER", current_user.id, "PASSWORD_CHANGED")
     db.commit()
