@@ -10,6 +10,7 @@ import "./theme.css";
 import "./styles/profile.css";
 import "./styles/responsive.css";
 import "./styles/palette.css";
+import "./styles/profile-fix.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
