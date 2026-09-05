@@ -20,6 +20,7 @@ import SalesDashboard from "./pages/SalesDashboard";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import CustomerQuotations from "./pages/CustomerQuotations";
 import CustomerQuotationDetail from "./pages/CustomerQuotationDetail";
+import IntelligenceHub from "./pages/IntelligenceHub";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 const INTERNAL_ROLES = ["ADMIN", "SALES", "SALES_MANAGER", "FINANCE"];
@@ -34,7 +35,7 @@ export default function App() {
     <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
       <Route path="/admin" element={<AdminDashboard />} /><Route path="/admin/users" element={<AdminUsers />} /><Route path="/admin/customers" element={<AdminCustomers />} /><Route path="/admin/products" element={<AdminProducts />} /><Route path="/admin/products/:productId" element={<ProductDetail />} /><Route path="/admin/policies" element={<AdminPolicies />} />
     </Route>
-    <Route element={<ProtectedRoute allowedRoles={INTERNAL_ROLES} />}><Route path="/products" element={<ProductDashboard />} /><Route path="/products/:productId" element={<ProductDetail />} /></Route>
+    <Route element={<ProtectedRoute allowedRoles={INTERNAL_ROLES} />}><Route path="/products" element={<ProductDashboard />} /><Route path="/products/:productId" element={<ProductDetail />} /><Route path="/command-center" element={<IntelligenceHub />} /></Route>
     <Route element={<ProtectedRoute allowedRoles={SALES_WORKSPACE_ROLES} />}>
       <Route path="/sales" element={<SalesDashboard />} /><Route path="/sales/quotations" element={<Quotations />} /><Route path="/sales/quotations/:quotationId" element={<QuotationDetail />} /><Route path="/sales/approvals" element={<Approvals />} /><Route path="/sales/fulfillment" element={<Fulfillment />} /><Route path="/sales/fulfillment/:quotationId" element={<Fulfillment />} /><Route path="/sales/billing" element={<Billing />} /><Route path="/sales/deal-health" element={<DealHealth />} />
     </Route>
