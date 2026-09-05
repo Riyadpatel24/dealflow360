@@ -1,0 +1,42 @@
+/* DealFlow360 — profile layout / alignment */
+.profile-shell{width:min(1160px,calc(100% - 48px));margin:0 auto;padding:28px 0 64px}
+.profile-header{display:flex;align-items:center;justify-content:space-between;gap:32px;margin:0 0 28px}
+.profile-header>div:first-child{min-width:0}
+.profile-header .profile-avatar-large{flex:0 0 82px}
+.profile-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,340px);grid-template-areas:"personal password" "side .";gap:20px;align-items:start}
+.profile-grid>.profile-card:first-child{grid-area:personal;min-width:0}
+.profile-grid>.password-card{grid-area:password;min-width:0}
+.profile-grid>.profile-side-card{grid-area:side;min-width:0}
+.profile-card{box-sizing:border-box;width:100%}
+.profile-card-heading{align-items:flex-start}
+.profile-card-heading>div{min-width:0}
+.profile-card-heading h2{font-size:18px;line-height:1.15}
+.profile-card-heading p{max-width:520px;line-height:1.4}
+.profile-form-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.password-card .profile-form-grid{grid-template-columns:1fr}
+.password-card .profile-actions{margin-top:18px}
+.password-requirements{display:grid;grid-template-columns:1fr 1fr;gap:7px 12px;margin-top:9px;padding:10px;border:1px solid var(--df-border);border-radius:9px;background:var(--df-lavender);font-size:9px}
+.password-requirements strong{grid-column:1/-1;font-size:10px;color:var(--df-navy)!important}
+.password-requirements span{display:flex;align-items:center;gap:5px;color:var(--df-muted)}
+.password-requirements span.valid{color:var(--df-success)}
+.password-requirements span.invalid{color:var(--df-muted)}
+.password-requirements b{font-size:11px;line-height:1}
+.profile-side-card{box-sizing:border-box;width:100%}
+.profile-side-card .profile-mini-avatar{margin-bottom:12px}
+.profile-side-card h2{font-size:17px}
+@media(max-width:900px){
+  .profile-shell{width:min(100% - 32px,720px)}
+  .profile-grid{grid-template-columns:1fr;grid-template-areas:"personal" "password" "side"}
+  .password-card{max-width:none}
+}
+@media(max-width:600px){
+  .profile-shell{width:calc(100% - 24px);padding-top:20px}
+  .profile-header{gap:18px;margin-bottom:20px}
+  .profile-header .profile-avatar-large{width:64px;height:64px;flex-basis:64px;font-size:32px}
+  .profile-card-heading{flex-direction:column;gap:10px;margin-bottom:18px}
+  .profile-card-heading .profile-role{align-self:flex-start}
+  .profile-form-grid{grid-template-columns:1fr}
+  .password-requirements{grid-template-columns:1fr}
+  .password-requirements strong{grid-column:auto}
+}
+@media(max-width:420px){.profile-header .profile-avatar-large{width:56px;height:56px;flex-basis:56px;font-size:28px}.profile-header h1{font-size:29px}.profile-card-heading h2{font-size:17px}}
