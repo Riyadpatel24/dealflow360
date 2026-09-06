@@ -6,7 +6,7 @@
   min-width: 170px;
   height: 42px;
   display: block !important;
-  background: url('/dealflow360-brand.svg') left center / 170px auto no-repeat !important;
+  background: url('/dealflow360-logo.png') left center / 141px 52px no-repeat !important;
 }
 .topbar > div:first-child > *,
 .brand-lockup > * {
@@ -18,21 +18,21 @@
   min-width: 170px !important;
   height: 42px !important;
   display: block !important;
-  background: url('/dealflow360-brand.svg') left center / 170px auto no-repeat !important;
+  background: url('/dealflow360-logo.png') left center / 141px 52px no-repeat !important;
   font-size: 0 !important;
 }
 .sales-brand > * { display: none !important; }
 
-/* Login / signup branding */
+/* Login / signup use the same exact logo asset. */
 .login-brand,
 .brand-section {
-  background: url('/dealflow360-brand.svg') left center / 170px auto no-repeat !important;
-  min-height: 42px;
+  background: url('/dealflow360-logo.png') left center / 141px 52px no-repeat !important;
+  min-height: 52px;
 }
 .login-brand > *,
 .brand-section > * { visibility: hidden !important; }
 
-/* Consistent white header treatment across all role workspaces. */
+/* Consistent white global header across Customer, Sales, Manager, Finance and Admin. */
 .topbar,
 .sales-topbar {
   background: #fff !important;
@@ -47,5 +47,5 @@
 @media (max-width: 560px) {
   .topbar > div:first-child,
   .brand-lockup,
-  .sales-brand { width: 150px !important; min-width: 150px !important; background-size: 150px auto !important; }
+  .sales-brand { width: 150px !important; min-width: 150px !important; background-size: 141px 52px !important; }
 }
