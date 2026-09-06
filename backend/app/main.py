@@ -12,6 +12,7 @@ from app.routers.dashboard import router as dashboard_router
 from app.routers.operations import router as operations_router
 from app.routers.quotations import router as quotations_router
 from app.routers.intelligence import router as intelligence_router
+from app.routers.quotation_form import router as quotation_form_router
 
 
 Base.metadata.create_all(bind=engine)
@@ -33,6 +34,7 @@ app.include_router(auth_router)
 app.include_router(dashboard_router)
 app.include_router(admin_router)
 app.include_router(quotations_router)
+app.include_router(quotation_form_router)
 app.include_router(operations_router)
 app.include_router(intelligence_router)
 
