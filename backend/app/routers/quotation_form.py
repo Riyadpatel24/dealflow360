@@ -16,7 +16,12 @@ def quotation_form_options(
     current_user: User = Depends(internal_access),
 ):
     customers = db.query(Customer).order_by(Customer.name).all()
-    products = db.query(Product).order_by(Product.name).all()
+    products = (
+        db.query(Product)
+        .filter(Product.category == "Policy")
+        .order_by(Product.name)
+        .all()
+    )
     return {
         "customers": [
             {"id": c.id, "name": c.name, "email": c.email, "tier": c.tier}
