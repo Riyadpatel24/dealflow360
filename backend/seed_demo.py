@@ -2,6 +2,7 @@ from decimal import Decimal
 
 from app.database.connection import SessionLocal
 from app.models.customer import Customer
+from app.models.discount_policy import DiscountPolicy
 from app.models.notification import Notification
 from app.models.operations import Inventory, SubscriptionPlan, Warehouse
 from app.models.product import Product
@@ -74,6 +75,28 @@ try:
             product.cost_price = price * Decimal("0.65")
             product.subscription_plan_id = monthly.id if is_subscription else None
         policy_products.append(product)
+
+    # Discount rules used by the risk/approval engine.
+    discount_policy_data = [
+        ("Bronze Policy", "Bronze", Decimal("5")),
+        ("Silver Policy", "Silver", Decimal("10")),
+        ("Gold Policy", "Gold", Decimal("15")),
+    ]
+    for name, tier, maximum in discount_policy_data:
+        policy = db.query(DiscountPolicy).filter(
+            DiscountPolicy.customer_tier == tier,
+            DiscountPolicy.category == "Policy",
+        ).first()
+        if policy is None:
+            db.add(DiscountPolicy(
+                name=name,
+                customer_tier=tier,
+                category="Policy",
+                max_discount_percent=maximum,
+            ))
+        else:
+            policy.name = name
+            policy.max_discount_percent = maximum
 
     # Keep the existing operational demo data available.
     laptop = db.query(Product).filter(Product.name == "Laptop Pro 14").first()
