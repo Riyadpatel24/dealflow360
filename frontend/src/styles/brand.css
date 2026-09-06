@@ -1,4 +1,4 @@
-/* DealFlow360 global brand header. Loaded last so every workspace uses one identical brand. */
+/* DealFlow360 global brand header — exact logo + matching Electric Blue/Purple header. */
 .topbar > div:first-child,
 .brand-lockup {
   position: relative;
@@ -9,9 +9,7 @@
   background: url('/dealflow360-logo.png') left center / 141px 52px no-repeat !important;
 }
 .topbar > div:first-child > *,
-.brand-lockup > * {
-  display: none !important;
-}
+.brand-lockup > * { display: none !important; }
 
 .sales-brand {
   width: 170px !important;
@@ -23,7 +21,7 @@
 }
 .sales-brand > * { display: none !important; }
 
-/* Login / signup use the same exact logo asset. */
+/* Same brand treatment on authentication pages. */
 .login-brand,
 .brand-section {
   background: url('/dealflow360-logo.png') left center / 141px 52px no-repeat !important;
@@ -32,20 +30,37 @@
 .login-brand > *,
 .brand-section > * { visibility: hidden !important; }
 
-/* Consistent white global header across Customer, Sales, Manager, Finance and Admin. */
+/* The global header uses the logo's Electric Blue/Purple family, not white. */
 .topbar,
-.sales-topbar {
-  background: #fff !important;
-  color: #111A3A !important;
-  border-bottom: 1px solid #D8D4EE !important;
+.sales-topbar,
+.navbar,
+.header,
+.app-header {
+  background: linear-gradient(90deg, #5B4BFF 0%, #4939E8 100%) !important;
+  color: #fff !important;
+  border-bottom: 1px solid rgba(255,255,255,.18) !important;
+  box-shadow: 0 4px 18px rgba(17,26,58,.18) !important;
 }
 .topbar strong,
-.sales-brand strong { color: #111A3A !important; }
+.sales-brand strong { color: #fff !important; }
 .topbar-subtitle,
-.sales-brand small { color: #6C6A88 !important; }
+.topbar-user,
+.sales-brand small,
+.sales-user-copy span { color: rgba(255,255,255,.78) !important; }
+
+/* Keep the existing profile control readable on the colored header. */
+.profile-menu-trigger {
+  background: rgba(255,255,255,.98) !important;
+  border-color: rgba(255,255,255,.55) !important;
+  color: #111A3A !important;
+}
 
 @media (max-width: 560px) {
   .topbar > div:first-child,
   .brand-lockup,
-  .sales-brand { width: 150px !important; min-width: 150px !important; background-size: 141px 52px !important; }
+  .sales-brand {
+    width: 150px !important;
+    min-width: 150px !important;
+    background-size: 141px 52px !important;
+  }
 }
