@@ -152,6 +152,14 @@ export default function AdminUsers() {
                 Sales
               </option>
 
+              <option value="SALES_MANAGER">
+                Sales Manager
+              </option>
+
+              <option value="FINANCE">
+                Finance
+              </option>
+
               <option value="ADMIN">
                 Admin
               </option>
