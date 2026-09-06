@@ -49,7 +49,7 @@
 .sales-brand small,
 .sales-user-copy span { color: rgba(255,255,255,.82) !important; }
 
-/* Top-right account pill: black avatar/doodle, name and role text on white. */
+/* Top-right account control: black avatar/doodle, name, role and chevron. */
 .profile-menu-trigger {
   background: #fff !important;
   border-color: rgba(17,26,58,.18) !important;
@@ -66,8 +66,34 @@
   fill: #000 !important;
   stroke: #000 !important;
 }
-.profile-menu-trigger img {
+.profile-menu-trigger img,
+.profile-menu-avatar {
   filter: grayscale(1) brightness(0) !important;
+}
+
+/* Open account menu: black text and doodles too. */
+.profile-menu-popover,
+.profile-menu-popover * {
+  color: #000 !important;
+}
+.profile-menu-popover svg,
+.profile-menu-popover svg * {
+  fill: #000 !important;
+  stroke: #000 !important;
+}
+.profile-menu-popover a,
+.profile-menu-popover > button {
+  color: #000 !important;
+}
+.profile-menu-popover a:hover,
+.profile-menu-popover > button:hover {
+  color: #000 !important;
+  background: #F4F1FF !important;
+}
+.profile-menu-popover .profile-menu-avatar,
+.profile-menu-popover .profile-menu-avatar-large {
+  filter: grayscale(1) brightness(0) !important;
+  color: #000 !important;
 }
 
 @media (max-width: 560px) {
