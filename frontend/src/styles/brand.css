@@ -1,0 +1,51 @@
+/* DealFlow360 global brand header. Loaded last so every workspace uses one identical brand. */
+.topbar > div:first-child,
+.brand-lockup {
+  position: relative;
+  width: 170px;
+  min-width: 170px;
+  height: 42px;
+  display: block !important;
+  background: url('/dealflow360-brand.svg') left center / 170px auto no-repeat !important;
+}
+.topbar > div:first-child > *,
+.brand-lockup > * {
+  display: none !important;
+}
+
+.sales-brand {
+  width: 170px !important;
+  min-width: 170px !important;
+  height: 42px !important;
+  display: block !important;
+  background: url('/dealflow360-brand.svg') left center / 170px auto no-repeat !important;
+  font-size: 0 !important;
+}
+.sales-brand > * { display: none !important; }
+
+/* Login / signup branding */
+.login-brand,
+.brand-section {
+  background: url('/dealflow360-brand.svg') left center / 170px auto no-repeat !important;
+  min-height: 42px;
+}
+.login-brand > *,
+.brand-section > * { visibility: hidden !important; }
+
+/* Consistent white header treatment across all role workspaces. */
+.topbar,
+.sales-topbar {
+  background: #fff !important;
+  color: #111A3A !important;
+  border-bottom: 1px solid #D8D4EE !important;
+}
+.topbar strong,
+.sales-brand strong { color: #111A3A !important; }
+.topbar-subtitle,
+.sales-brand small { color: #6C6A88 !important; }
+
+@media (max-width: 560px) {
+  .topbar > div:first-child,
+  .brand-lockup,
+  .sales-brand { width: 150px !important; min-width: 150px !important; background-size: 150px auto !important; }
+}
