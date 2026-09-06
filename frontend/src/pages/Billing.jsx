@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { createInvoices, getInvoices, recordPayment } from "../api/operations";
+import { createInvoices, getInvoices, getQuotations, recordPayment } from "../api/operations";
+
+const INVOICE_READY = new Set(["FULFILLED", "PARTIALLY_FULFILLED", "READY_TO_SHIP"]);
 
 export default function Billing() {
   const [invoices, setInvoices] = useState([]);
-  const [quotationId, setQuotationId] = useState("1");
+  const [quotations, setQuotations] = useState([]);
+  const [quotationId, setQuotationId] = useState("");
   const [loading, setLoading] = useState(true);
   const [working, setWorking] = useState(false);
   const [error, setError] = useState("");
@@ -15,7 +18,11 @@ export default function Billing() {
     try {
       setLoading(true);
       setError("");
-      setInvoices(await getInvoices());
+      const [invoiceRows, quotationRows] = await Promise.all([getInvoices(), getQuotations()]);
+      setInvoices(invoiceRows);
+      setQuotations(quotationRows);
+      const ready = quotationRows.filter((q) => INVOICE_READY.has(q.status));
+      setQuotationId((current) => current || String(ready[0]?.id || ""));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -25,11 +32,13 @@ export default function Billing() {
 
   useEffect(() => { load(); }, []);
 
+  const invoiceReady = quotations.filter((q) => INVOICE_READY.has(q.status));
+
   async function generate() {
     try {
       setWorking(true); setError(""); setSuccess("");
       const result = await createInvoices(quotationId);
-      setSuccess(`${Array.isArray(result) ? result.length : 1} invoice(s) generated for quotation Q-${quotationId}.`);
+      setSuccess(`${Array.isArray(result) ? result.length : 1} invoice(s) generated for Q-${quotationId}.`);
       await load();
     } catch (err) { setError(err.message); }
     finally { setWorking(false); }
@@ -70,17 +79,27 @@ export default function Billing() {
 
         <section className="content-card" style={{ marginBottom: 18 }}>
           <div className="section-header">
-            <div><h2>Generate invoice</h2><p>Use an approved/fulfilled quotation to create its billing documents.</p></div>
+            <div><h2>Generate invoice</h2><p>Only approved/fulfilled workflow states can be invoiced.</p></div>
           </div>
           <div style={{ display: "flex", gap: 10, alignItems: "end", flexWrap: "wrap" }}>
-            <label style={{ display: "grid", gap: 6, minWidth: 180 }}>
-              <span className="field-label">Quotation ID</span>
-              <input value={quotationId} onChange={(e) => setQuotationId(e.target.value)} type="number" min="1" />
+            <label style={{ display: "grid", gap: 6, minWidth: 260 }}>
+              <span className="field-label">Invoice-ready quotation</span>
+              <select value={quotationId} onChange={(e) => setQuotationId(e.target.value)} disabled={loading || working || invoiceReady.length === 0}>
+                {invoiceReady.length === 0 ? <option value="">No quotation is ready for invoicing</option> : invoiceReady.map((quote) => (
+                  <option key={quote.id} value={quote.id}>Q-{quote.id} · {quote.quotation_number} · {quote.status}</option>
+                ))}
+              </select>
             </label>
-            <button className="primary-small-button" onClick={generate} disabled={working || !quotationId}>
+            <button className="primary-small-button" onClick={generate} disabled={working || !quotationId || invoiceReady.length === 0}>
               {working ? "Working..." : "Generate Invoice"}
             </button>
           </div>
+          {invoiceReady.length === 0 && !loading && (
+            <p style={{ marginTop: 12, color: "#8b2e24" }}>No quotations are currently FULFILLED, PARTIALLY_FULFILLED, or READY_TO_SHIP. Complete fulfillment/shipping first.</p>
+          )}
+          {invoiceReady.length > 0 && (
+            <p style={{ marginTop: 12, color: "#52606d" }}>{invoiceReady.length} quotation(s) ready. Drafts and quotes still under approval are intentionally excluded.</p>
+          )}
         </section>
 
         <section className="content-card">
