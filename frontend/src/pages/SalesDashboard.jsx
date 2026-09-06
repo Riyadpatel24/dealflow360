@@ -7,13 +7,13 @@ const baseModules = [
   { title: "Quotations", description: "Build, review and evaluate customer quotes.", path: "/sales/quotations", icon: "▣", metric: "Quote pipeline", tone: "blue", roles: ["SALES", "SALES_MANAGER"] },
   { title: "Approvals", description: "Move high-risk deals through the right approval chain.", path: "/sales/approvals", icon: "✓", metric: "Governance", tone: "green", roles: ["SALES_MANAGER", "FINANCE"] },
   { title: "Fulfillment", description: "Allocate inventory and move approved orders to shipment.", path: "/sales/fulfillment", icon: "↗", metric: "Operations", tone: "teal", roles: ["SALES", "SALES_MANAGER"] },
+  { title: "Billing & Payments", description: "Generate invoices and record customer settlement.", path: "/sales/billing", icon: "$", metric: "Revenue", tone: "purple", roles: ["FINANCE"] },
   { title: "Deal Health", description: "Spot risk, stalled deals and revenue blockers early.", path: "/sales/deal-health", icon: "⌁", metric: "Intelligence", tone: "blue", roles: ["SALES", "SALES_MANAGER", "FINANCE"] },
 ];
 
 export default function SalesDashboard() {
   const { user } = useAuth();
   const role = user?.role || "SALES";
-  const roleLabel = role === "SALES_MANAGER" ? "Sales Manager" : role === "FINANCE" ? "Finance Operations" : "Sales";
   const isFinance = role === "FINANCE";
   const modules = baseModules.filter((module) => module.roles.includes(role));
 
