@@ -129,6 +129,24 @@ try:
                     available_quantity=quantity,
                 ))
 
+    # Seed policy inventory so the approved quotation can complete the
+    # happy-path fulfillment demo instead of immediately becoming a backorder.
+    for product in policy_products:
+        for warehouse_name, quantity in [("Main Warehouse", 10), ("East Depot", 5)]:
+            warehouse = warehouses[warehouse_name]
+            stock = db.query(Inventory).filter(
+                Inventory.warehouse_id == warehouse.id,
+                Inventory.product_id == product.id,
+            ).one_or_none()
+            if stock is None:
+                db.add(Inventory(
+                    warehouse_id=warehouse.id,
+                    product_id=product.id,
+                    available_quantity=quantity,
+                ))
+            elif stock.available_quantity < quantity:
+                stock.available_quantity = quantity
+
     quotation = db.query(Quotation).filter(Quotation.quotation_number == "Q-1042").first()
     if quotation:
         quotation.status = "DRAFT"
