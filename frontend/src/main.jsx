@@ -14,6 +14,7 @@ import "./styles/profile-fix.css";
 import "./styles/account-responsive.css";
 import "./styles/profile-layout.css";
 import "./styles/profile-spacing.css";
+import "./styles/brand.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
