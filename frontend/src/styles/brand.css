@@ -49,10 +49,25 @@
 .sales-brand small,
 .sales-user-copy span { color: rgba(255,255,255,.82) !important; }
 
+/* Top-right account pill: black avatar/doodle, name and role text on white. */
 .profile-menu-trigger {
-  background: rgba(255,255,255,.98) !important;
-  border-color: rgba(255,255,255,.55) !important;
-  color: #111A3A !important;
+  background: #fff !important;
+  border-color: rgba(17,26,58,.18) !important;
+  color: #000 !important;
+}
+.profile-menu-trigger,
+.profile-menu-trigger *,
+.profile-menu-trigger strong,
+.profile-menu-trigger span,
+.profile-menu-trigger small,
+.profile-menu-trigger svg,
+.profile-menu-trigger svg * {
+  color: #000 !important;
+  fill: #000 !important;
+  stroke: #000 !important;
+}
+.profile-menu-trigger img {
+  filter: grayscale(1) brightness(0) !important;
 }
 
 @media (max-width: 560px) {
